@@ -1,0 +1,9 @@
+{
+  "labels":[
+    "weather",
+    "news",
+    "wiki"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

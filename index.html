@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://127.0.0.1:8000 ws://127.0.0.1:8000 wss://eastus.stt.speech.microsoft.com wss://eastus.tts.speech.microsoft.com https://api.open-meteo.com https://nominatim.openstreetmap.org http://api.mediastack.com/v1/news https://en.wikipedia.org ; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob: data:; media-src 'self' blob:;"> <!-- This needs to be cleaned up -->
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+
+    <title>Voice Assistant</title>
+    <script src="./speech.js"></script>
+  </head>
+  <body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <button class="nav-btn" id="menu-btn" title="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <button class="nav-btn" id="mic-btn" title="Voice Input">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </button>
+      <button class="nav-btn" id="open-history" title="History">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+      <button class="nav-btn" id="open-settings" title="Settings">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div id="main-view" class="view active">
+        <div class="panel-content">
+          <h1 class="panel-title">Assistant</h1>
+          <div class="chat-panel">
+            <div id="chat-container" class="chat-container">
+              <!-- Chat messages will go here -->
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="inputmsg" class="chat-input" placeholder="Type your message here..." />
+              <div class="input-buttons">
+                <button id="startBtn" class="chat-mic-btn" title="Voice Input">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                  </svg>
+                </button>
+                <button id="sendMessage" class="chat-send-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.99972 12L3.2688 3.12451C9.88393 5.04617 16.0276 8.07601 21.4855 11.9997C16.0276 15.9235 9.884 18.9535 3.26889 20.8752L5.99972 12ZM5.99972 12L13.5 12" />
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <!-- Settings Panel -->
+      <div id="settings-view" class="view">
+        <div class="panel-content">
+          <h1 class="panel-title">Settings</h1>
+          
+          <form id="preferences-form">
+            <div class="form-section">
+              <label class="section-label">Theme</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="theme" value="light" />
+                  <span>Light</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="theme" value="dark" />
+                  <span>Dark</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="theme" value="system" checked />
+                  <span>System</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <label class="section-label" for="pref-location">Location</label>
+              <input type="text" id="pref-location" class="text-input" placeholder="e.g., Toronto, Canada" />
+            </div>
+
+            <div class="form-section">
+              <label class="section-label">Temperature Unit</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="temp-unit" value="celsius" checked />
+                  <span>Celsius</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="temp-unit" value="fahrenheit" />
+                  <span>Fahrenheit</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Save Preferences</button>
+              <button type="button" id="reset-preferences" class="btn-secondary">Reset to Defaults</button>
+            </div>
+          </form>
+          <p id="settings-status" class="status-message"></p>
+        </div>
+      </div>
+
+      <!-- History Panel -->
+      <div id="history-view" class="view">
+        <div class="panel-content">
+          <h1 class="panel-title">Query History</h1>
+          
+          <div class="panel-actions">
+            <button id="clear-history" class="btn-danger">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/>
+              </svg>
+              Clear History
+            </button>
+          </div>
+          
+          <div id="history-list" class="history-list">
+            <p class="empty-history">No history yet. Make a voice query to get started!</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="./renderer.js"></script>
+</html>

@@ -1,0 +1,38 @@
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "description": "Group 27 BTS530 Capstone Project",
+  "homepage": "https://github.com/CAPSTONE-2025/Group_27#readme",
+  "bugs": {
+    "url": "https://github.com/CAPSTONE-2025/Group_27/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ktimachy@github.com/CAPSTONE-2025/Group_27.git"
+  },
+  "license": "MIT",
+  "author": "Kevin Timachy",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "jest",
+    "test:preferences": "jest tests/preferences.test.js",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0"
+  },
+  "dependencies": {
+    "@picovoice/porcupine-node": "^3.0.6",
+    "axios": "^1.8.3",
+    "dotenv": "^16.4.7",
+    "electron-store": "^11.0.2",
+    "mic": "^2.1.2",
+    "microsoft-cognitiveservices-speech-sdk": "^1.42.0",
+    "vosk": "^0.3.39",
+    "wav": "^1.0.2"
+  }
+}
